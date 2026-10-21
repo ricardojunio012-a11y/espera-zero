@@ -1,0 +1,286 @@
+{
+  "metadados": {
+    "fonte": "Prefeitura de Belo Horizonte — Unidade de Pronto Atendimento (UPA)",
+    "fonteUrl": "https://prefeitura.pbh.gov.br/saude/informacoes/atencao-a-saude/urgencia-e-emergencia/upa",
+    "atualizadoNaFonte": "2026-09-29",
+    "fonteDasCoordenadas": "Google Maps (conforme arquivo enviado; requer conferência antes de estimar rotas)",
+    "observacao": "Coordenadas adicionadas para uso no mapa. Barreiro e Oeste aparecem em endereços temporários durante obras. A distribuição de especialidades fixas e serviços específicos foi preenchida conforme a tabela fornecida; confirme as informações com a Prefeitura de Belo Horizonte antes de uso operacional.",
+    "avisos": [
+      "As especialidades foram importadas do arquivo atualizado; a própria observação pede confirmação junto à PBH antes de uso operacional.",
+      "O escopo do projeto lista clínica médica, pediatria, ortopedia e odontologia; o arquivo atualizado lista clínica médica, pediatria e cirurgia geral em todas as unidades, ortopedia em 3 unidades e não lista odontologia.",
+      "Barreiro e Oeste têm observação de endereço temporário durante obras; confirmar endereços e coordenadas.",
+      "IDs fontePbh com prefixo semente-local são marcadores locais provisórios, não IDs oficiais do CKAN."
+    ]
+  },
+  "unidades": [
+    {
+      "slug": "barreiro",
+      "nome": "UPA Barreiro",
+      "tipo": "upa",
+      "endereco": "Rua Cabo Valério dos Santos, 285",
+      "bairro": "Átila de Paiva",
+      "regional": "barreiro",
+      "lat": -19.979219,
+      "lng": -44.029123,
+      "telefone": "(31) 3277-5842 / (31) 3277-5840",
+      "especialidades": [
+        "clinica",
+        "pediatria",
+        "cirurgia-geral"
+      ],
+      "fontePbh": {
+        "id": "semente-local:barreiro",
+        "atualizadoEm": "2026-09-29T00:00:00-03:00"
+      },
+      "fonteCoordenadas": "Google Maps",
+      "coordenadasConfirmadas": false,
+      "servicosEspecificos": [
+        "Atendimento geral de urgência para a região."
+      ],
+      "especialidadesFonte": [
+        "Clínica médica",
+        "Pediatria",
+        "Cirurgia geral"
+      ]
+    },
+    {
+      "slug": "centro-sul",
+      "nome": "UPA Centro-Sul",
+      "tipo": "upa",
+      "endereco": "Rua Domingos Vieira, 488",
+      "bairro": "Santa Efigênia",
+      "regional": "centro-sul",
+      "lat": -19.922114,
+      "lng": -43.925308,
+      "telefone": "(31) 3238-5900",
+      "especialidades": [
+        "clinica",
+        "pediatria",
+        "cirurgia-geral"
+      ],
+      "fontePbh": {
+        "id": "semente-local:centro-sul",
+        "atualizadoEm": "2026-09-29T00:00:00-03:00"
+      },
+      "fonteCoordenadas": "Google Maps",
+      "servicosEspecificos": [
+        "Referência integrada para urgência e crise em saúde mental."
+      ],
+      "especialidadesFonte": [
+        "Clínica médica",
+        "Pediatria",
+        "Cirurgia geral"
+      ]
+    },
+    {
+      "slug": "leste",
+      "nome": "UPA Leste",
+      "tipo": "upa",
+      "endereco": "Avenida dos Andradas, 7450",
+      "bairro": "Vera Cruz",
+      "regional": "leste",
+      "lat": -19.905685,
+      "lng": -43.896646,
+      "telefone": "(31) 3277-9030",
+      "especialidades": [
+        "clinica",
+        "pediatria",
+        "cirurgia-geral",
+        "ortopedia"
+      ],
+      "fontePbh": {
+        "id": "semente-local:leste",
+        "atualizadoEm": "2026-09-29T00:00:00-03:00"
+      },
+      "fonteCoordenadas": "Google Maps",
+      "servicosEspecificos": [
+        "Plantão especializado em ortopedia de urgência."
+      ],
+      "especialidadesFonte": [
+        "Clínica médica",
+        "Pediatria",
+        "Cirurgia geral",
+        "Ortopedia"
+      ]
+    },
+    {
+      "slug": "nordeste",
+      "nome": "UPA Nordeste",
+      "tipo": "upa",
+      "endereco": "Rua Joaquim Gouvêa, 560",
+      "bairro": "São Paulo",
+      "regional": "nordeste",
+      "lat": -19.866494,
+      "lng": -43.925513,
+      "telefone": "(31) 3246-9512 / (31) 3246-7501",
+      "especialidades": [
+        "clinica",
+        "pediatria",
+        "cirurgia-geral"
+      ],
+      "fontePbh": {
+        "id": "semente-local:nordeste",
+        "atualizadoEm": "2026-09-29T00:00:00-03:00"
+      },
+      "fonteCoordenadas": "Google Maps",
+      "servicosEspecificos": [
+        "Atendimento geral de urgência para a região."
+      ],
+      "especialidadesFonte": [
+        "Clínica médica",
+        "Pediatria",
+        "Cirurgia geral"
+      ]
+    },
+    {
+      "slug": "noroeste",
+      "nome": "UPA Noroeste",
+      "tipo": "upa",
+      "endereco": "Rua Pereira Passos, 38",
+      "bairro": "São Cristóvão",
+      "regional": "noroeste",
+      "lat": -19.904444,
+      "lng": -43.947595,
+      "telefone": "(31) 3277-1347",
+      "especialidades": [
+        "clinica",
+        "pediatria",
+        "cirurgia-geral"
+      ],
+      "fontePbh": {
+        "id": "semente-local:noroeste",
+        "atualizadoEm": "2026-09-29T00:00:00-03:00"
+      },
+      "fonteCoordenadas": "Google Maps",
+      "servicosEspecificos": [
+        "Funciona anexa e integrada ao complexo do Hospital Metropolitano Odilon Behrens (HOB)."
+      ],
+      "especialidadesFonte": [
+        "Clínica médica",
+        "Pediatria",
+        "Cirurgia geral"
+      ]
+    },
+    {
+      "slug": "norte",
+      "nome": "UPA Norte",
+      "tipo": "upa",
+      "endereco": "Avenida Risoleta Neves, 2580",
+      "bairro": "Guarani",
+      "regional": "norte",
+      "lat": -19.845655,
+      "lng": -43.914262,
+      "telefone": "(31) 3277-6790 / (31) 3277-6705",
+      "especialidades": [
+        "clinica",
+        "pediatria",
+        "cirurgia-geral",
+        "ortopedia"
+      ],
+      "fontePbh": {
+        "id": "semente-local:norte",
+        "atualizadoEm": "2026-09-29T00:00:00-03:00"
+      },
+      "fonteCoordenadas": "Google Maps",
+      "servicosEspecificos": [
+        "Plantão especializado em ortopedia de urgência."
+      ],
+      "especialidadesFonte": [
+        "Clínica médica",
+        "Pediatria",
+        "Cirurgia geral",
+        "Ortopedia"
+      ]
+    },
+    {
+      "slug": "oeste",
+      "nome": "UPA Oeste",
+      "tipo": "upa",
+      "endereco": "Rua Santa Cruz, 137",
+      "bairro": "Alto Barroca",
+      "regional": "oeste",
+      "lat": -19.932285,
+      "lng": -43.967128,
+      "telefone": "(31) 3277-7044 / (31) 3277-6875 / (31) 3277-6871",
+      "especialidades": [
+        "clinica",
+        "pediatria",
+        "cirurgia-geral",
+        "ortopedia"
+      ],
+      "fontePbh": {
+        "id": "semente-local:oeste",
+        "atualizadoEm": "2026-09-29T00:00:00-03:00"
+      },
+      "fonteCoordenadas": "Google Maps",
+      "coordenadasConfirmadas": false,
+      "servicosEspecificos": [
+        "Plantão especializado em ortopedia de urgência."
+      ],
+      "especialidadesFonte": [
+        "Clínica médica",
+        "Pediatria",
+        "Cirurgia geral",
+        "Ortopedia"
+      ]
+    },
+    {
+      "slug": "pampulha",
+      "nome": "UPA Pampulha",
+      "tipo": "upa",
+      "endereco": "Avenida Santa Terezinha, 515",
+      "bairro": "Santa Terezinha",
+      "regional": "pampulha",
+      "lat": -19.870516,
+      "lng": -44.001137,
+      "telefone": "(31) 3277-8441 / (31) 3277-8435 / (31) 3277-3447",
+      "especialidades": [
+        "clinica",
+        "pediatria",
+        "cirurgia-geral"
+      ],
+      "fontePbh": {
+        "id": "semente-local:pampulha",
+        "atualizadoEm": "2026-09-29T00:00:00-03:00"
+      },
+      "fonteCoordenadas": "Google Maps",
+      "servicosEspecificos": [
+        "Atendimento geral de urgência para a região."
+      ],
+      "especialidadesFonte": [
+        "Clínica médica",
+        "Pediatria",
+        "Cirurgia geral"
+      ]
+    },
+    {
+      "slug": "venda-nova",
+      "nome": "UPA Venda Nova",
+      "tipo": "upa",
+      "endereco": "Rua Padre Pedro Pinto, 173",
+      "bairro": "Venda Nova",
+      "regional": "venda-nova",
+      "lat": -19.820145,
+      "lng": -43.953259,
+      "telefone": "(31) 3277-8909 / (31) 3277-8904",
+      "especialidades": [
+        "clinica",
+        "pediatria",
+        "cirurgia-geral"
+      ],
+      "fontePbh": {
+        "id": "semente-local:venda-nova",
+        "atualizadoEm": "2026-09-29T00:00:00-03:00"
+      },
+      "fonteCoordenadas": "Google Maps",
+      "servicosEspecificos": [
+        "Atendimento geral de urgência para a região."
+      ],
+      "especialidadesFonte": [
+        "Clínica médica",
+        "Pediatria",
+        "Cirurgia geral"
+      ]
+    }
+  ]
+}
