@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "test": "vitest run",
+    "test:regras": "firebase emulators:exec --only firestore --project demo-espera-zero \"vitest run --config vitest.regras.config.ts\"",
     "test:watch": "vitest",
     "preview": "vite preview",
     "dev:fire": "firebase emulators:start --only auth,firestore,hosting"

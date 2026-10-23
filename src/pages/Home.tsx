@@ -1,8 +1,10 @@
+import Layout from '../components/Layout'
+import QualUpa from '../components/QualUpa'
+
 export default function Home() {
-return (
-<main>
-<h1>Espera Zero</h1>
-<p>Encontre informações sobre as UPAs de Belo Horizonte.</p>
-</main>
-)
+  return (
+    <Layout>
+      <QualUpa modo="recomendacao" />
+    </Layout>
+  )
 }
