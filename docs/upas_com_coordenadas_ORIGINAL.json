@@ -1,0 +1,143 @@
+{
+  "fonte": "Prefeitura de Belo Horizonte — Unidade de Pronto Atendimento (UPA)",
+  "fonteUrl": "https://prefeitura.pbh.gov.br/saude/informacoes/atencao-a-saude/urgencia-e-emergencia/upa",
+  "atualizadoNaFonte": "2026-09-29",
+  "observacao": "Coordenadas adicionadas para uso no mapa. Barreiro e Oeste aparecem em endereços temporários durante obras.",
+  "unidades": [
+    {
+      "slug": "barreiro",
+      "nome": "UPA Barreiro",
+      "tipo": "upa",
+      "endereco": "Rua Cabo Valério dos Santos, 285",
+      "bairro": "Átila de Paiva",
+      "regional": "barreiro",
+      "telefone": [
+        "(31) 3277-5842",
+        "(31) 3277-5840"
+      ],
+      "lat": -19.979219,
+      "lng": -44.029123,
+      "fonteCoordenadas": "Google Maps"
+    },
+    {
+      "slug": "centro-sul",
+      "nome": "UPA Centro-Sul",
+      "tipo": "upa",
+      "endereco": "Rua Domingos Vieira, 488",
+      "bairro": "Santa Efigênia",
+      "regional": "centro-sul",
+      "telefone": [
+        "(31) 3238-5900"
+      ],
+      "lat": -19.922114,
+      "lng": -43.925308,
+      "fonteCoordenadas": "Google Maps"
+    },
+    {
+      "slug": "leste",
+      "nome": "UPA Leste",
+      "tipo": "upa",
+      "endereco": "Avenida dos Andradas, 7450",
+      "bairro": "Vera Cruz",
+      "regional": "leste",
+      "telefone": [
+        "(31) 3277-9030"
+      ],
+      "lat": -19.905685,
+      "lng": -43.896646,
+      "fonteCoordenadas": "Google Maps"
+    },
+    {
+      "slug": "nordeste",
+      "nome": "UPA Nordeste",
+      "tipo": "upa",
+      "endereco": "Rua Joaquim Gouvêa, 560",
+      "bairro": "São Paulo",
+      "regional": "nordeste",
+      "telefone": [
+        "(31) 3246-9512",
+        "(31) 3246-7501"
+      ],
+      "lat": -19.866494,
+      "lng": -43.925513,
+      "fonteCoordenadas": "Google Maps"
+    },
+    {
+      "slug": "noroeste",
+      "nome": "UPA Noroeste",
+      "tipo": "upa",
+      "endereco": "Rua Pereira Passos, 38",
+      "bairro": "São Cristóvão",
+      "regional": "noroeste",
+      "telefone": [
+        "(31) 3277-1347"
+      ],
+      "lat": -19.904444,
+      "lng": -43.947595,
+      "fonteCoordenadas": "Google Maps"
+    },
+    {
+      "slug": "norte",
+      "nome": "UPA Norte",
+      "tipo": "upa",
+      "endereco": "Avenida Risoleta Neves, 2580",
+      "bairro": "Guarani",
+      "regional": "norte",
+      "telefone": [
+        "(31) 3277-6790",
+        "(31) 3277-6705"
+      ],
+      "lat": -19.845655,
+      "lng": -43.914262,
+      "fonteCoordenadas": "Google Maps"
+    },
+    {
+      "slug": "oeste",
+      "nome": "UPA Oeste",
+      "tipo": "upa",
+      "endereco": "Rua Santa Cruz, 137",
+      "bairro": "Alto Barroca",
+      "regional": "oeste",
+      "telefone": [
+        "(31) 3277-7044",
+        "(31) 3277-6875",
+        "(31) 3277-6871"
+      ],
+      "lat": -19.932285,
+      "lng": -43.967128,
+      "fonteCoordenadas": "Google Maps"
+    },
+    {
+      "slug": "pampulha",
+      "nome": "UPA Pampulha",
+      "tipo": "upa",
+      "endereco": "Avenida Santa Terezinha, 515",
+      "bairro": "Santa Terezinha",
+      "regional": "pampulha",
+      "telefone": [
+        "(31) 3277-8441",
+        "(31) 3277-8435",
+        "(31) 3277-3447"
+      ],
+      "lat": -19.870516,
+      "lng": -44.001137,
+      "fonteCoordenadas": "Google Maps"
+    },
+    {
+      "slug": "venda-nova",
+      "nome": "UPA Venda Nova",
+      "tipo": "upa",
+      "endereco": "Rua Padre Pedro Pinto, 173",
+      "bairro": "Venda Nova",
+      "regional": "venda-nova",
+      "telefone": [
+        "(31) 3277-8909",
+        "(31) 3277-8904"
+      ],
+      "lat": -19.820145,
+      "lng": -43.953259,
+      "fonteCoordenadas": "Google Maps"
+    }
+  ]
+}
+
