@@ -1,8 +1,16 @@
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@espera-zero/shared': fileURLToPath(new URL('./packages/shared/src/index.ts', import.meta.url)),
+    },
+  },
   test: {
     environment: 'node',
-    include: ['tests/firestore.rules.test.ts'],
+    include: ['tests/**/*.test.ts'],
+    // Every file clears the same emulator database.
+    fileParallelism: false,
   },
 })

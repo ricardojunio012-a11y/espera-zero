@@ -340,3 +340,21 @@
   flex-direction: column;
   gap: 0.6rem;
 }
+
+.cartao-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.25rem;
+}
+
+.mapa {
+  height: 16rem;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  overflow: hidden;
+  z-index: 0;
+}
+
+.mapa-carregando {
+  background: #eef1f5;
+}

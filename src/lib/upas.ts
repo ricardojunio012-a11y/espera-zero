@@ -61,6 +61,18 @@ export function linkComoChegar(unidade: Pick<Unidade, 'lat' | 'lng'>): string {
 }
 
 /**
+ * RF-21 / RN-22: only UPA, address and specialty go in the message, never
+ * symptoms or risk colour. wa.me opens WhatsApp with the text filled in.
+ */
+export function mensagemFamilia(unidade: Pick<Unidade, 'nome' | 'endereco' | 'bairro'>, esp: Especialidade): string {
+  return `Estou indo para a ${unidade.nome} (${unidade.endereco}, ${unidade.bairro}), atendimento de ${nomeEspecialidade(esp).toLowerCase()}. Aviso quando for atendido.`
+}
+
+export function linkWhatsApp(texto: string): string {
+  return `https://wa.me/?text=${encodeURIComponent(texto)}`
+}
+
+/**
  * RF-09: one sentence on why this one. When the closest UPA isn't the
  * recommended one, say why.
  */

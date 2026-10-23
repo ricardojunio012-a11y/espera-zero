@@ -1,8 +1,10 @@
+import type { Especialidade } from '@espera-zero/shared'
 import type { LinhaUpa } from '../lib/upas'
-import { linkComoChegar, origemDaEstimativa, precisaConfirmar } from '../lib/upas'
+import { linkComoChegar, linkWhatsApp, mensagemFamilia, origemDaEstimativa, precisaConfirmar } from '../lib/upas'
 
 interface Props {
   linha: LinhaUpa
+  especialidade: Especialidade
   destaque?: boolean
 }
 
@@ -14,7 +16,7 @@ function nivelEspera(minutos: number): 'baixa' | 'media' | 'alta' {
 
 const TEXTO_NIVEL = { baixa: 'espera curta', media: 'espera média', alta: 'espera longa' }
 
-export default function CartaoUpa({ linha, destaque = false }: Props) {
+export default function CartaoUpa({ linha, especialidade, destaque = false }: Props) {
   const { unidade } = linha
 
   if (!linha.atende) {
@@ -53,9 +55,14 @@ export default function CartaoUpa({ linha, destaque = false }: Props) {
         {origemDaEstimativa(estimativa)}
         {estimativa.minutos !== null && precisaConfirmar(estimativa) && ' · confirme ao chegar'}
       </p>
-      <a className="link-rota" href={linkComoChegar(unidade)} target="_blank" rel="noreferrer">
-        Como chegar<span className="sr-only"> à {unidade.nome} (abre o Google Maps)</span>
-      </a>
+      <div className="cartao-acoes">
+        <a className="link-rota" href={linkComoChegar(unidade)} target="_blank" rel="noreferrer">
+          Como chegar<span className="sr-only"> à {unidade.nome} (abre o Google Maps)</span>
+        </a>
+        <a className="link-rota" href={linkWhatsApp(mensagemFamilia(unidade, especialidade))} target="_blank" rel="noreferrer">
+          Avise minha família<span className="sr-only"> pelo WhatsApp</span>
+        </a>
+      </div>
     </article>
   )
 }

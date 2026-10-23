@@ -28,3 +28,6 @@ dist-ssr
 
 # emulador
 firestore-debug.log
+
+# ambiente
+.env
