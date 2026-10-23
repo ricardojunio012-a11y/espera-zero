@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { UNIDADES } from '@espera-zero/shared'
 import type { Painel } from '../services/servicos'
 import { agendaSimulada, checkinsSimulados } from '../services/mock'
-import { ordenarUpas, origemDaEstimativa, porQue } from './upas'
+import { linkWhatsApp, mensagemFamilia, ordenarUpas, origemDaEstimativa, porQue } from './upas'
 
 const agora = new Date('2026-10-23T15:00:00-03:00')
 const painel: Painel = {
@@ -66,5 +66,16 @@ describe('checkinsSimulados', () => {
       .toEqual(checkinsSimulados(UNIDADES, agora).map((c) => c.minutos))
     const idades = painel.checkins.map((c) => agora.getTime() - Date.parse(c.criadoEm))
     expect(Math.max(...idades)).toBeLessThan(2 * 3_600_000)
+  })
+})
+
+describe('Avise minha família', () => {
+  it('leva só UPA, endereço e especialidade, nada de sintoma (RN-22)', () => {
+    const oeste = UNIDADES.find((u) => u.slug === 'oeste')!
+    const texto = mensagemFamilia(oeste, 'ortopedia')
+    expect(texto).toContain('UPA Oeste')
+    expect(texto).toContain(oeste.endereco)
+    expect(texto).toContain('ortopedia')
+    expect(linkWhatsApp(texto)).toBe(`https://wa.me/?text=${encodeURIComponent(texto)}`)
   })
 })

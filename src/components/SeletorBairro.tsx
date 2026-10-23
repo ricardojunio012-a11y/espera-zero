@@ -1,6 +1,7 @@
 import { useId, useMemo, useState } from 'react'
 import { BAIRROS_CENTROS, normalizar } from '@espera-zero/shared'
 import type { BairroCentro, Regional } from '@espera-zero/shared'
+import type { SituacaoGeo } from '../hooks/useGeolocalizacao'
 
 const NOME_REGIONAL: Record<Regional, string> = {
   barreiro: 'Barreiro',
@@ -20,14 +21,24 @@ const BAIRROS_ORDENADOS = [...BAIRROS_CENTROS]
   .map((bairro) => ({ bairro, busca: normalizar(bairro.nome) }))
   .sort((a, b) => a.bairro.nome.localeCompare(b.bairro.nome, 'pt-BR'))
 
+const TEXTO_GEO: Partial<Record<SituacaoGeo, string>> = {
+  detectando: 'Detectando sua localização… Se preferir, escolha o bairro abaixo.',
+  negado: 'Sem permissão para usar a localização. Escolha o seu bairro abaixo.',
+  indisponivel: 'Não foi possível achar a sua localização agora. Escolha o seu bairro abaixo.',
+}
+
 interface Props {
   bairro: BairroCentro | null
+  /** True when the neighbourhood came from the browser's location, not a choice. */
+  automatico: boolean
+  geo: SituacaoGeo
   onEscolher: (bairro: BairroCentro | null) => void
+  onDetectar: () => void
 }
 
 /** RF-02: the 493 official neighbourhoods, searchable, ignoring accents and case. */
-export default function SeletorBairro({ bairro, onEscolher }: Props) {
-  const [aberto, setAberto] = useState(bairro === null)
+export default function SeletorBairro({ bairro, automatico, geo, onEscolher, onDetectar }: Props) {
+  const [editando, setEditando] = useState(false)
   const [termo, setTermo] = useState('')
   const idBusca = useId()
   const idContagem = useId()
@@ -40,23 +51,32 @@ export default function SeletorBairro({ bairro, onEscolher }: Props) {
   function escolher(novo: BairroCentro) {
     onEscolher(novo)
     setTermo('')
-    setAberto(false)
+    setEditando(false)
   }
 
-  if (!aberto && bairro) {
+  if (bairro && !editando) {
     return (
       <div className="seletor-bairro">
-        <button type="button" className="pilula" onClick={() => setAberto(true)}>
+        <button type="button" className="pilula" onClick={() => setEditando(true)}>
           <span aria-hidden="true">⌖</span> Você está em <strong>{bairro.nome}</strong>
           <span className="sr-only">. Trocar o bairro</span>
         </button>
+        {automatico && <p className="ajuda">Pela localização do celular. Não está certo? Toque para trocar.</p>}
       </div>
     )
   }
 
+  const textoGeo = TEXTO_GEO[geo]
+
   return (
     <section className="seletor-bairro painel" aria-labelledby={idBusca + '-titulo'}>
       <h2 id={idBusca + '-titulo'} className="painel-titulo">Onde você está?</h2>
+      {textoGeo && <p className="ajuda" role="status">{textoGeo}</p>}
+      {(geo === 'negado' || geo === 'indisponivel' || geo === 'parado') && (
+        <button type="button" className="botao-texto" onClick={onDetectar}>
+          {geo === 'parado' ? 'Usar minha localização' : 'Tentar de novo'}
+        </button>
+      )}
       <label htmlFor={idBusca} className="rotulo">Digite o nome do seu bairro</label>
       <input
         id={idBusca}
@@ -89,7 +109,7 @@ export default function SeletorBairro({ bairro, onEscolher }: Props) {
         <p className="ajuda">Mostrando {MAXIMO_VISIVEL}. Digite mais letras para achar o seu.</p>
       )}
       {bairro && (
-        <button type="button" className="botao-texto" onClick={() => setAberto(false)}>
+        <button type="button" className="botao-texto" onClick={() => setEditando(false)}>
           Manter {bairro.nome}
         </button>
       )}

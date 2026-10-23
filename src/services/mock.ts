@@ -1,6 +1,6 @@
 import { UNIDADES } from '@espera-zero/shared'
 import type { AgendaDia, AgendaPorUnidade, Checkin, DiaSemana, Especialidade, Unidade } from '@espera-zero/shared'
-import type { Painel, Servicos } from './servicos'
+import type { NovoCheckin, Painel, Servicos } from './servicos'
 
 const DIAS: DiaSemana[] = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab']
 
@@ -62,14 +62,22 @@ export function checkinsSimulados(unidades: Unidade[], agora: Date): Checkin[] {
   }))
 }
 
+// Check-ins sent during this visit, so the mock answers like the real thing.
+const enviados: Checkin[] = []
+
 export const servicosMock: Servicos = {
   async carregarPainel(agora: Date): Promise<Painel> {
     return {
       unidades: UNIDADES,
-      checkins: checkinsSimulados(UNIDADES, agora),
+      checkins: [...checkinsSimulados(UNIDADES, agora), ...enviados],
       agendas: agendaSimulada(UNIDADES, agora),
       alertas: [],
       simulado: true,
     }
+  },
+
+  async registrarCheckin(novo: NovoCheckin): Promise<void> {
+    const agora = Date.now()
+    enviados.push({ ...novo, janela: Math.floor(agora / 1_800_000), criadoEm: new Date(agora).toISOString() })
   },
 }
