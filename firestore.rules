@@ -60,10 +60,144 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
-    // Alertas: leitura pública, sem escrita pelo cliente.
+    // Alertas (RN-17, RN-18): leitura pública; criação validada; o único
+    // update permitido é somar 1 em confirmacoes ou contestacoes, junto com
+    // o voto do uid em alertas/{id}/votos/{uid} (um voto por pessoa).
     match /alertas/{id} {
       allow read: if true;
-      allow create, update, delete: if false;
+
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly([
+          'slug', 'tipo', 'especialidade', 'texto', 'autor',
+          'criadoEm', 'expiraEm', 'confirmacoes', 'contestacoes'
+        ])
+        && request.resource.data.keys().hasAll([
+          'slug', 'tipo', 'autor', 'criadoEm', 'expiraEm',
+          'confirmacoes', 'contestacoes'
+        ])
+        && request.resource.data.autor == request.auth.uid
+        && request.resource.data.slug is string
+        && request.resource.data.tipo in [
+          'tem-profissional', 'sem-profissional', 'raio-x', 'fila', 'farmacia', 'outro'
+        ]
+        && (!('especialidade' in request.resource.data)
+          || especialidadeValida(request.resource.data.especialidade))
+        && textoValido(request.resource.data)
+        && request.resource.data.criadoEm == request.time
+        && expiraNoPrazo(request.resource.data)
+        && request.resource.data.confirmacoes == 0
+        && request.resource.data.contestacoes == 0;
+
+      allow update: if request.auth != null
+        && request.auth.uid != resource.data.autor
+        && somaUmVoto()
+        && !exists(/databases/$(database)/documents/alertas/$(id)/votos/$(request.auth.uid))
+        && existsAfter(/databases/$(database)/documents/alertas/$(id)/votos/$(request.auth.uid));
+
+      allow delete: if false;
+
+      match /votos/{uid} {
+        allow read: if true;
+        allow create: if request.auth != null
+          && request.auth.uid == uid
+          && request.resource.data.keys().hasOnly(['voto', 'criadoEm'])
+          && request.resource.data.voto in ['confirmo', 'contesto']
+          && request.resource.data.criadoEm == request.time
+          // O contador do alerta sobe no mesmo lote, no campo do voto.
+          && getAfter(/databases/$(database)/documents/alertas/$(id)).data[
+               request.resource.data.voto == 'confirmo' ? 'confirmacoes' : 'contestacoes'
+             ] == get(/databases/$(database)/documents/alertas/$(id)).data[
+               request.resource.data.voto == 'confirmo' ? 'confirmacoes' : 'contestacoes'
+             ] + 1;
+        allow update, delete: if false;
+      }
+    }
+
+    // Sugestões do quadro da semana (RN-19): entram como pendentes e viram
+    // vigentes com 3 confirmações de pessoas diferentes de quem sugeriu.
+    match /sugestoesQuadro/{id} {
+      allow read: if true;
+
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly([
+          'slug', 'especialidade', 'dias', 'modo', 'de', 'ate',
+          'autor', 'confirmacoes', 'status', 'criadoEm'
+        ])
+        && request.resource.data.keys().hasAll([
+          'slug', 'especialidade', 'dias', 'modo',
+          'autor', 'confirmacoes', 'status', 'criadoEm'
+        ])
+        && request.resource.data.autor == request.auth.uid
+        && request.resource.data.slug is string
+        && especialidadeValida(request.resource.data.especialidade)
+        && request.resource.data.dias is list
+        && request.resource.data.dias.size() > 0
+        && request.resource.data.dias.hasOnly(['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'])
+        && horarioValido(request.resource.data)
+        && request.resource.data.confirmacoes == 0
+        && request.resource.data.status == 'pendente'
+        && request.resource.data.criadoEm == request.time;
+
+      allow update: if request.auth != null
+        && request.auth.uid != resource.data.autor
+        && resource.data.status == 'pendente'
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['confirmacoes', 'status'])
+        && request.resource.data.confirmacoes == resource.data.confirmacoes + 1
+        && request.resource.data.status
+             == (request.resource.data.confirmacoes >= 3 ? 'vigente' : 'pendente')
+        && !exists(/databases/$(database)/documents/sugestoesQuadro/$(id)/votos/$(request.auth.uid))
+        && existsAfter(/databases/$(database)/documents/sugestoesQuadro/$(id)/votos/$(request.auth.uid));
+
+      allow delete: if false;
+
+      match /votos/{uid} {
+        allow read: if true;
+        allow create: if request.auth != null
+          && request.auth.uid == uid
+          && request.resource.data.keys().hasOnly(['criadoEm'])
+          && request.resource.data.criadoEm == request.time
+          && getAfter(/databases/$(database)/documents/sugestoesQuadro/$(id)).data.confirmacoes
+             == get(/databases/$(database)/documents/sugestoesQuadro/$(id)).data.confirmacoes + 1;
+        allow update, delete: if false;
+      }
+    }
+
+    function especialidadeValida(valor) {
+      return valor in ['clinica', 'pediatria', 'ortopedia', 'odonto', 'cirurgia-geral'];
+    }
+
+    // Texto livre só no tipo "outro", com até 120 caracteres.
+    function textoValido(dados) {
+      return dados.tipo == 'outro'
+        ? ('texto' in dados && dados.texto is string
+            && dados.texto.size() > 0 && dados.texto.size() <= 120)
+        : !('texto' in dados);
+    }
+
+    // Expira em 6 h (12 h para "sem profissional"); 5 min de folga para o
+    // relógio do aparelho, que calcula expiraEm.
+    function expiraNoPrazo(dados) {
+      let horas = dados.tipo == 'sem-profissional' ? 12 : 6;
+      return dados.expiraEm is timestamp
+        && dados.expiraEm > request.time
+        && dados.expiraEm <= request.time + duration.value(horas * 60 + 5, 'm');
+    }
+
+    function horarioValido(dados) {
+      return dados.modo == 'horario'
+        ? (dados.de is string && dados.de.matches('^([01][0-9]|2[0-3]):[0-5][0-9]$')
+            && dados.ate is string && dados.ate.matches('^([01][0-9]|2[0-3]):[0-5][0-9]$'))
+        : (dados.modo in ['24h', 'nao'] && !('de' in dados) && !('ate' in dados));
+    }
+
+    // Exatamente um dos contadores sobe 1; nada mais muda.
+    function somaUmVoto() {
+      let novo = request.resource.data;
+      let antigo = resource.data;
+      return novo.diff(antigo).affectedKeys().hasOnly(['confirmacoes', 'contestacoes'])
+        && ((novo.confirmacoes == antigo.confirmacoes + 1 && novo.contestacoes == antigo.contestacoes)
+          || (novo.contestacoes == antigo.contestacoes + 1 && novo.confirmacoes == antigo.confirmacoes));
     }
   }
 }
