@@ -1,10 +1,8 @@
-import { Suspense, lazy, useMemo } from 'react'
+import { Suspense, lazy } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import type { Especialidade } from '@espera-zero/shared'
-import { useBairro } from '../hooks/useBairro'
-import { useGeolocalizacao } from '../hooks/useGeolocalizacao'
-import { usePainel } from '../hooks/usePainel'
-import { ESPECIALIDADES, nomeEspecialidade, ordenarUpas, porQue, posicaoDoBairro } from '../lib/upas'
+import { useRecomendacao } from '../hooks/useRecomendacao'
+import { ESPECIALIDADES, nomeEspecialidade, porQue } from '../lib/upas'
 import AbasEspecialidade from './AbasEspecialidade'
 import CartaoUpa from './CartaoUpa'
 import SeletorBairro from './SeletorBairro'
@@ -24,17 +22,7 @@ interface Props {
 export default function QualUpa({ modo }: Props) {
   const [params, setParams] = useSearchParams()
   const esp = lerEspecialidade(params.get('esp'))
-  const { bairro: escolhido, escolher } = useBairro()
-  const geo = useGeolocalizacao(escolhido === null)
-  // RN-06: a manual choice always beats the sensor.
-  const bairro = escolhido ?? geo.bairro
-  const estado = usePainel()
-  const posicao = useMemo(() => (bairro ? posicaoDoBairro(bairro) : null), [bairro])
-
-  const linhas = useMemo(
-    () => (estado.situacao === 'pronto' ? ordenarUpas(estado.painel, esp, posicao, estado.agora) : []),
-    [estado, esp, posicao],
-  )
+  const { bairro, escolhido, escolher, geo, estado, posicao, linhas } = useRecomendacao(esp)
 
   function mudarEspecialidade(nova: Especialidade) {
     setParams(nova === 'clinica' ? {} : { esp: nova }, { replace: true })
