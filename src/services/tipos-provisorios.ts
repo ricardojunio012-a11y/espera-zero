@@ -76,6 +76,16 @@ export interface Historico {
   atualizadoEm: string
 }
 
+export type HorarioEspecialidade = { de: string; ate: string } | '24h' | 'nao'
+
+export interface Estimativa {
+  minutos: number | null
+  relatos: number
+  ultimoHaMin: number | null
+  origem: 'relatos' | 'historico' | 'sem-dados'
+  confianca: 'alta' | 'media' | 'baixa'
+}
+
 // TODO(contrato): GeometriasBairros está no CLAUDE.md mas não na seção 6.2 do plano.
 // Forma provisória: id do bairro -> geometria em WKT.
 export type GeometriasBairros = Record<string, string>
