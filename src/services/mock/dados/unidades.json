@@ -1,0 +1,41 @@
+[
+  {
+    "slug": "barreiro",
+    "nome": "UPA Barreiro",
+    "tipo": "upa",
+    "endereco": "Rua Cabo Valério dos Santos, 285",
+    "bairro": "Átila de Paiva",
+    "regional": "barreiro",
+    "lat": -19.979219,
+    "lng": -44.029123,
+    "telefone": "(31) 3277-5842",
+    "especialidades": ["clinica", "pediatria"],
+    "fontePbh": { "id": "semente-local:barreiro", "atualizadoEm": "2026-09-29" }
+  },
+  {
+    "slug": "centro-sul",
+    "nome": "UPA Centro-Sul",
+    "tipo": "upa",
+    "endereco": "Rua Domingos Vieira, 488",
+    "bairro": "Santa Efigênia",
+    "regional": "centro-sul",
+    "lat": -19.922114,
+    "lng": -43.925308,
+    "telefone": "(31) 3238-5900",
+    "especialidades": ["clinica", "pediatria"],
+    "fontePbh": { "id": "semente-local:centro-sul", "atualizadoEm": "2026-09-29" }
+  },
+  {
+    "slug": "leste",
+    "nome": "UPA Leste",
+    "tipo": "upa",
+    "endereco": "Avenida dos Andradas, 7450",
+    "bairro": "Vera Cruz",
+    "regional": "leste",
+    "lat": -19.905685,
+    "lng": -43.896646,
+    "telefone": "(31) 3277-9030",
+    "especialidades": ["clinica", "pediatria", "ortopedia"],
+    "fontePbh": { "id": "semente-local:leste", "atualizadoEm": "2026-09-29" }
+  }
+]
