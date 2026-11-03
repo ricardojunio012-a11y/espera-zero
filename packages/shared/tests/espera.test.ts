@@ -139,7 +139,7 @@ describe('espera', () => {
     ).toBe('oesteortopediater_14');
   });
 
-  it('mantém o dia e a hora de Belo Horizonte mesmo quando o ambiente usa UTC', () => {
+  it('interpreta dia e hora no fuso de Belo Horizonte', () => {
     const data = Date.parse('2026-10-13T14:00:00-03:00');
 
     const dados = agregarHistorico(
