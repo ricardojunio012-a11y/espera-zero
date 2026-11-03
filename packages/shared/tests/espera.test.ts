@@ -8,7 +8,7 @@ import {
 import type { Checkin, Historico } from '../src/tipos';
 
 // Data fixa com fuso explícito de Belo Horizonte (UTC-3).
-const agora = Date.parse('2026-10-13T14:00:00-03:00');
+const agora = Date.parse('2026-10-13T14:30:00-03:00');
 
 function checkin(
   minutos: number,
