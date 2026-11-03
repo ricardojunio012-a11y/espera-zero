@@ -42,10 +42,6 @@ function epochDe(data: string): number {
   return Number.isFinite(valor) ? valor : Number.NaN;
 }
 
-function diaDaSemana(date: Date): DiaSemana {
-  return partesNoFuso(date).dia;
-}
-
 function confiancaPorQuantidade(total: number): Confianca {
   if (total < 3) return 'baixa';
   if (total < 6) return 'media';
