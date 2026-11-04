@@ -1,12 +1,14 @@
-import { useMemo } from 'react'
+import { Suspense, lazy } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import type { Especialidade } from '@espera-zero/shared'
-import { useBairro } from '../hooks/useBairro'
-import { usePainel } from '../hooks/usePainel'
-import { ESPECIALIDADES, nomeEspecialidade, ordenarUpas, porQue, posicaoDoBairro } from '../lib/upas'
+import { useRecomendacao } from '../hooks/useRecomendacao'
+import { ESPECIALIDADES, nomeEspecialidade, porQue } from '../lib/upas'
 import AbasEspecialidade from './AbasEspecialidade'
 import CartaoUpa from './CartaoUpa'
 import SeletorBairro from './SeletorBairro'
+
+// Leaflet only loads on the list page; if it fails, the list still works (RF-12).
+const MapaUpas = lazy(() => import('./MapaUpas'))
 
 function lerEspecialidade(valor: string | null): Especialidade {
   return ESPECIALIDADES.find((e) => e.id === valor)?.id ?? 'clinica'
@@ -20,14 +22,7 @@ interface Props {
 export default function QualUpa({ modo }: Props) {
   const [params, setParams] = useSearchParams()
   const esp = lerEspecialidade(params.get('esp'))
-  const { bairro, escolher } = useBairro()
-  const estado = usePainel()
-  const posicao = useMemo(() => (bairro ? posicaoDoBairro(bairro) : null), [bairro])
-
-  const linhas = useMemo(
-    () => (estado.situacao === 'pronto' ? ordenarUpas(estado.painel, esp, posicao, estado.agora) : []),
-    [estado, esp, posicao],
-  )
+  const { bairro, escolhido, escolher, geo, estado, posicao, linhas } = useRecomendacao(esp)
 
   function mudarEspecialidade(nova: Especialidade) {
     setParams(nova === 'clinica' ? {} : { esp: nova }, { replace: true })
@@ -36,17 +31,24 @@ export default function QualUpa({ modo }: Props) {
   const recomendada = linhas[0]?.atende ? linhas[0] : null
   const motivo = porQue(linhas, posicao)
   const titulo = modo === 'lista' ? 'Todas as UPAs' : 'Qual UPA eu vou agora?'
+  const busca = params.size ? `?${params}` : ''
 
   return (
     <>
-      <SeletorBairro bairro={bairro} onEscolher={escolher} />
+      <SeletorBairro
+        bairro={bairro}
+        automatico={escolhido === null && bairro !== null}
+        geo={geo.situacao}
+        onEscolher={escolher}
+        onDetectar={geo.detectar}
+      />
 
       <section className="bloco" aria-labelledby="titulo-qual-upa">
         <div className="bloco-cabeca">
           <h2 id="titulo-qual-upa">{titulo}</h2>
           {modo === 'recomendacao'
-            ? <Link to={`/upas${params.size ? `?${params}` : ''}`} className="link-secundario">ver todas</Link>
-            : <Link to={`/${params.size ? `?${params}` : ''}`} className="link-secundario">voltar</Link>}
+            ? <Link to={`/upas${busca}`} className="link-secundario">ver todas</Link>
+            : <Link to={`/${busca}`} className="link-secundario">voltar</Link>}
         </div>
         <AbasEspecialidade valor={esp} onMudar={mudarEspecialidade} />
 
@@ -71,7 +73,7 @@ export default function QualUpa({ modo }: Props) {
             {modo === 'recomendacao' && (
               recomendada ? (
                 <>
-                  <CartaoUpa linha={recomendada} destaque />
+                  <CartaoUpa linha={recomendada} especialidade={esp} destaque />
                   {motivo && <p className="motivo">{motivo}</p>}
                 </>
               ) : (
@@ -83,13 +85,18 @@ export default function QualUpa({ modo }: Props) {
             )}
 
             {modo === 'lista' && (
-              <ol className="lista-upas">
-                {linhas.map((linha, i) => (
-                  <li key={linha.unidade.slug}>
-                    <CartaoUpa linha={linha} destaque={i === 0 && linha.atende} />
-                  </li>
-                ))}
-              </ol>
+              <>
+                <Suspense fallback={<div className="mapa mapa-carregando" aria-hidden="true" />}>
+                  <MapaUpas linhas={linhas} posicao={posicao} />
+                </Suspense>
+                <ol className="lista-upas">
+                  {linhas.map((linha, i) => (
+                    <li key={linha.unidade.slug}>
+                      <CartaoUpa linha={linha} especialidade={esp} destaque={i === 0 && linha.atende} />
+                    </li>
+                  ))}
+                </ol>
+              </>
             )}
           </>
         )}

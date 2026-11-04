@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { agregarHistorico, estimarEspera, gerarIdHistorico, medianaPonderada } from '../src/espera';
 import type { Checkin, Historico } from '../src/tipos';
-const agora = new Date(2026, 9, 13, 14, 0, 0).getTime();
+// 14:30: relatos de até 30 min atrás continuam na mesma hora cheia (14h) do histórico.
+const agora = new Date(2026, 9, 13, 14, 30, 0).getTime();
 function checkin(minutos: number, idadeMin: number, especialidade: Checkin['especialidade']='ortopedia'): Checkin {
   return { slug: 'oeste', especialidade, minutos, janela: 1, criadoEm: new Date(agora - idadeMin * 60_000).toISOString() };
 }

@@ -1,0 +1,40 @@
+name: Sincronizar base da PBH
+
+# RF-25 / ADR-006: confere todo dia a base oficial de UPAs da Prefeitura.
+# Sem o segredo FIREBASE_SERVICE_ACCOUNT, só valida o formato e lista as
+# divergências no resumo do job; com ele, grava as unidades no Firestore.
+on:
+  schedule:
+    - cron: '0 9 * * *' # 06:00 em Brasília
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Conferir a base da PBH
+        if: ${{ env.CONTA == '' }}
+        env:
+          CONTA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: npm run sync:pbh
+
+      - name: Gravar as unidades no Firestore
+        if: ${{ env.CONTA != '' }}
+        env:
+          CONTA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          FIREBASE_PROJECT_ID: espera-zero-fc359
+        run: |
+          printf '%s' "$CONTA" > "$RUNNER_TEMP/conta.json"
+          GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/conta.json" npm run sync:pbh -- --firestore

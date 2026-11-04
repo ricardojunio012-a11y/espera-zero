@@ -13,7 +13,7 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
-    // Rules tests need the Firestore emulator; they run via `npm run test:regras`.
-    exclude: [...configDefaults.exclude, 'tests/firestore.rules.test.ts'],
+    // tests/ needs the Firebase emulators; it runs via `npm run test:regras`.
+    exclude: [...configDefaults.exclude, 'tests/**'],
   },
 })
